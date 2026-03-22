@@ -1,0 +1,48 @@
+<div class="card">
+  <h2>Run #<%= @run.id %></h2>
+  <p>
+    Agent: <strong><%= @run.agent.key %></strong> |
+    Runtime: <strong><%= @run.runtime %></strong> |
+    Status: <span class="badge <%= status_badge_class(@run.status) %>"><%= @run.status %></span>
+  </p>
+  <p>
+    Source: <%= [@run.source_type, @run.source_id].compact.join("#") %>
+  </p>
+  <%= button_to "Retry", retry_run_path(@run), method: :post, class: "btn primary" %>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <h3>Events</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Type</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @events.each do |event| %>
+          <tr>
+            <td><%= event.sequence %></td>
+            <td><%= event.event_type %></td>
+            <td><%= event.message %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h3>Artifacts</h3>
+    <% @artifacts.each do |artifact| %>
+      <h4><%= artifact.kind %> - <%= artifact.label %></h4>
+      <% if artifact.content_text.present? %>
+        <pre><%= artifact.content_text %></pre>
+      <% else %>
+        <pre><%= artifact.content_json %></pre>
+      <% end %>
+    <% end %>
+  </div>
+</div>

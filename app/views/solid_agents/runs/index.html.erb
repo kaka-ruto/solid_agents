@@ -1,0 +1,27 @@
+<div class="card">
+  <h2>Runs</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Agent</th>
+        <th>Status</th>
+        <th>Runtime</th>
+        <th>Source</th>
+        <th>Started</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @runs.each do |run| %>
+        <tr>
+          <td><%= link_to "##{run.id}", run_path(run) %></td>
+          <td><%= run.agent&.key %></td>
+          <td><span class="badge <%= status_badge_class(run.status) %>"><%= run.status %></span></td>
+          <td><%= run.runtime %></td>
+          <td><%= [run.source_type, run.source_id].compact.join("#") %></td>
+          <td><%= run.started_at || run.created_at %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

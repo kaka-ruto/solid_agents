@@ -1,0 +1,13 @@
+/.bundle/
+/.ruby-lsp/
+/coverage/
+/log/*.log
+/pkg/
+/tmp/
+/vendor/bundle/
+*.gem
+.DS_Store
+test/dummy/log/*.log
+test/dummy/db/*.sqlite3
+test/dummy/storage/*.sqlite3
+test/tmp/

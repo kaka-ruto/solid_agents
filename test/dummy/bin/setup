@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "fileutils"
+
+ROOT = File.expand_path("..", __dir__)
+Dir.chdir(ROOT) do
+  system("bundle check") || system!("bundle install")
+  FileUtils.mkdir_p("storage")
+end

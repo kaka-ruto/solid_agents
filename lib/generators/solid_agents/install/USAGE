@@ -1,0 +1,4 @@
+Run the schema install and add a `solid_agents` database in your app's `config/database.yml`.
+Then mount the UI in routes:
+
+  mount SolidAgents::Engine, at: "/solid_agents"

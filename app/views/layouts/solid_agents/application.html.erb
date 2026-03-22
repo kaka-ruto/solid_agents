@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SolidAgents</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= render "layouts/solid_agents/style" %>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap">
+        <h1>SolidAgents</h1>
+        <nav>
+          <%= link_to "Runs", runs_path %>
+          <%= link_to "Agents", agents_path %>
+        </nav>
+      </div>
+    </header>
+    <main class="wrap">
+      <% if notice.present? %><p class="flash notice"><%= notice %></p><% end %>
+      <% if alert.present? %><p class="flash alert"><%= alert %></p><% end %>
+      <%= yield %>
+    </main>
+  </body>
+</html>
