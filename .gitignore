@@ -1,6 +1,7 @@
 /.bundle/
 /.ruby-lsp/
 /coverage/
+/dist/
 /log/*.log
 /pkg/
 /tmp/
