@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+VERSION="${1:-}"
+
+if [[ -z "$VERSION" ]]; then
+  echo "Usage: bin/release <version>"
+  exit 1
+fi
+
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "Git working tree is not clean. Commit or stash your changes first."
+  exit 1
+fi
+
+CURRENT_VERSION="$(ruby -e 'require_relative "lib/solid_agents/version"; print SolidAgents::VERSION')"
+
+if [[ "$CURRENT_VERSION" != "$VERSION" ]]; then
+  echo "Version mismatch: lib/solid_agents/version.rb is $CURRENT_VERSION but you requested $VERSION."
+  echo "Update lib/solid_agents/version.rb first, then rerun this command."
+  exit 1
+fi
+
+GEM_FILE="solid_agents-${VERSION}.gem"
+
+echo "Building $GEM_FILE..."
+gem build solid_agents.gemspec
+
+echo "Pushing $GEM_FILE to RubyGems..."
+gem push "$GEM_FILE" --host https://rubygems.org
+
+echo "Cleaning up local artifact..."
+rm -f "$GEM_FILE"
+
+echo "Release $VERSION published to RubyGems."
