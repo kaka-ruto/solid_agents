@@ -5,7 +5,7 @@ ActiveRecord::Schema[6.1].define do
     t.string :key, null: false
     t.string :name, null: false
     t.string :role, null: false, default: "alex"
-    t.string :runtime, null: false, default: "pi"
+    t.string :runtime, null: false, default: "ruby_llm"
     t.boolean :enabled, null: false, default: true
     t.string :environment
     t.string :model
@@ -28,7 +28,7 @@ ActiveRecord::Schema[6.1].define do
     t.string :status, null: false, default: "queued"
     t.string :stage, null: false, default: "received"
     t.string :stage_owner, null: false, default: "alex"
-    t.string :runtime, null: false, default: "pi"
+    t.string :runtime, null: false, default: "ruby_llm"
     t.string :environment, null: false
     t.string :repo_path
     t.string :base_branch

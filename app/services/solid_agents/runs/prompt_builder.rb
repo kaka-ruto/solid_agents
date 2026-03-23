@@ -7,8 +7,9 @@ module SolidAgents
     class PromptBuilder
       def self.call(run:, context:)
         <<~PROMPT
-          You are #{run.stage_owner} executing stage #{run.stage} for run #{run.id}.
-          Goal: move the workflow to the next stage with clear evidence.
+          Stage owner: #{run.stage_owner}
+          Stage: #{run.stage}
+          Run id: #{run.id}
 
           Constraints:
           - Repository path: #{run.repo_path}
@@ -16,11 +17,6 @@ module SolidAgents
           - Test command: #{run.test_command}
           - Runtime: #{run.runtime}
           - Max iterations: #{run.max_iterations || SolidAgents.max_iterations}
-
-          Stage handoff contract:
-          - Produce concise notes for the next stage owner.
-          - Include reproducible evidence and command output.
-          - Respect repository rules from AGENTS.md.
 
           Context JSON:
           #{JSON.pretty_generate(context)}

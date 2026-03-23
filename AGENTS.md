@@ -9,7 +9,7 @@ Instructions for AI coding agents working in this gem.
 - Follow Rails engine conventions used by the solid_* gems.
 - `solid_agents` owns automation execution workflows:
   - consume incident/trace APIs (for example from `solid_events`)
-  - execute fix/test/PR/QA/review workflows through runtimes
+  - execute staged fix/test/PR workflows through runtime adapters
   - track run state, artifacts, and execution history
 - Do not add source-of-truth observability storage or incident detection/lifecycle ownership here; that belongs in `solid_events`.
 
@@ -18,6 +18,10 @@ Instructions for AI coding agents working in this gem.
 - Prefer minimal, focused changes over broad refactors.
 - Keep public API changes reflected in `README.md`.
 - Add or update Minitest coverage for behavior changes.
+- Prefer integration tests in `test/integration`; do not add controller tests.
+- Use RubyLLM conventions for agent orchestration:
+  - place agent classes under `app/agents`
+  - place prompt files under `app/prompts/.../instructions.txt.erb`
 - Run tests with Ruby `4.0.1`.
 
 ## Commit rules

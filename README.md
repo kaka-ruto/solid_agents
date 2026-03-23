@@ -1,6 +1,6 @@
 # SolidAgents
 
-**Event-driven error fixing workflow for Rails apps, powered by the pi runtime.**
+**Event-driven error fixing workflow for Rails apps, powered by RubyLLM agents.**
 
 > [!WARNING]
 > `solid_agents` is an early release and still a work in progress.
@@ -18,9 +18,9 @@
 
 - Consume error-like events from source adapters (starting with `solid_errors` style payloads)
 - Track runs in an event-driven stage machine
-- Enforce non-overlapping stage ownership (`alex`, `betty`, `chad`, `david`, `emma`)
+- Enforce non-overlapping stage ownership (`alex`, `betty`, `chad`, `david`, `eddy`)
 - Persist handoffs, notes, and artifacts for each stage
-- Execute stage tasks through the pi runtime adapter
+- Execute stage tasks through the RubyLLM runtime adapter
 
 It does **not** own observability storage or incident detection as a source of truth.
 
@@ -52,7 +52,7 @@ Configure engine DB connection if desired:
 ```ruby
 # config/environments/production.rb
 config.solid_agents.connects_to = { database: { writing: :solid_agents } }
-config.solid_agents.default_runtime = :pi
+config.solid_agents.default_runtime = :ruby_llm
 ```
 
 Mount the UI:
@@ -69,11 +69,11 @@ end
 Create pipeline agents:
 
 ```ruby
-%w[alex betty chad david emma].each do |key|
+%w[alex betty chad david eddy].each do |key|
   SolidAgents::Agent.find_or_create_by!(key: key, environment: Rails.env) do |agent|
     agent.name = key.capitalize
     agent.role = key
-    agent.runtime = "pi"
+    agent.runtime = "ruby_llm"
     agent.working_directory = Rails.root.to_s
     agent.enabled = true
   end
@@ -86,10 +86,16 @@ Dispatch from a job:
 SolidAgents.dispatch_error(source: solid_error_record, agent_key: "alex")
 ```
 
+## RubyLLM Conventions
+
+- Agent classes live in `app/agents/solid_agents/agents`.
+- Prompt instructions live in `app/prompts/.../instructions.txt.erb`.
+- Stage owners map directly to RubyLLM agent classes.
+
 ## Configuration
 
 ```ruby
-config.solid_agents.pi_command = "pi"
+config.solid_agents.default_model = "gpt-5-nano"
 config.solid_agents.default_test_command = "bin/rails test"
 config.solid_agents.max_iterations = 8
 ```

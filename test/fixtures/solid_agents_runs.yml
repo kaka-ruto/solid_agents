@@ -5,7 +5,7 @@ received_run:
   status: queued
   stage: received
   stage_owner: alex
-  runtime: pi
+  runtime: ruby_llm
   environment: test
   repo_path: /tmp/repo
   base_branch: main
@@ -21,7 +21,7 @@ failed_run:
   status: failed
   stage: triaged
   stage_owner: alex
-  runtime: pi
+  runtime: ruby_llm
   environment: test
   repo_path: /tmp/repo
   base_branch: main

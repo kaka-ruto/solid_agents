@@ -3,7 +3,7 @@
 require "test_helper"
 
 module SolidAgents
-  class RunsControllerTest < ActionDispatch::IntegrationTest
+  class RunsFlowTest < ActionDispatch::IntegrationTest
     test "index and show work" do
       run = SolidAgents::Run.find(fixture_id(:received_run))
 

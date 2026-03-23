@@ -21,9 +21,9 @@ module SolidAgents
       "repro_manual" => "betty",
       "fixing" => "chad",
       "verifying" => "david",
-      "pr_opened" => "emma",
-      "ci_wait" => "emma",
-      "done" => "emma"
+      "pr_opened" => "eddy",
+      "ci_wait" => "eddy",
+      "done" => "eddy"
     }.freeze
 
     FINAL_STAGES = ["done", "failed"].freeze

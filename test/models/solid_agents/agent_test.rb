@@ -5,7 +5,7 @@ require "test_helper"
 module SolidAgents
   class AgentTest < ActiveSupport::TestCase
     test "validates role" do
-      agent = Agent.new(key: "zara", name: "Zara", runtime: "pi", role: "nope")
+      agent = Agent.new(key: "zara", name: "Zara", runtime: "ruby_llm", role: "nope")
       assert_not agent.valid?
       assert_includes agent.errors[:role], "is not included in the list"
     end

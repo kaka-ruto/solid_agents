@@ -1,5 +1,5 @@
-# 002 Pi Runtime Only
+# 002 RubyLLM Runtime Only
 
-- [x] Remove tinyclaw/openclaw runtime paths.
-- [x] Add pi runtime adapter and config.
-- [x] Make pi the default runtime everywhere.
+- [x] Remove legacy tinyclaw/openclaw runtime paths.
+- [x] Add RubyLLM runtime adapter and config.
+- [x] Make RubyLLM the default runtime everywhere.

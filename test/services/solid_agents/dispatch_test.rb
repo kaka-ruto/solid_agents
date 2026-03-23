@@ -15,7 +15,7 @@ module SolidAgents
           assert_equal "received", run.stage
           assert_equal "alex", run.stage_owner
           assert_equal "queued", run.status
-          assert_equal "pi", run.runtime
+          assert_equal "ruby_llm", run.runtime
           assert_equal "received", run.work_item.column_key
           assert_equal 1, run.events.count
         end

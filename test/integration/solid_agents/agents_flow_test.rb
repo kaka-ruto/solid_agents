@@ -3,7 +3,7 @@
 require "test_helper"
 
 module SolidAgents
-  class AgentsControllerTest < ActionDispatch::IntegrationTest
+  class AgentsFlowTest < ActionDispatch::IntegrationTest
     test "index show edit update" do
       agent = SolidAgents::Agent.find(fixture_id(:alex))
 

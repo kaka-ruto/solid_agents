@@ -2,7 +2,7 @@ alex:
   key: alex
   name: Alex
   role: alex
-  runtime: pi
+  runtime: ruby_llm
   enabled: true
   environment: test
   capabilities_json: {}
@@ -15,7 +15,7 @@ betty:
   key: betty
   name: Betty
   role: betty
-  runtime: pi
+  runtime: ruby_llm
   enabled: true
   environment: test
   capabilities_json: {}
