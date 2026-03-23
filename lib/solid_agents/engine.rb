@@ -15,12 +15,8 @@ module SolidAgents
     end
 
     initializer "solid_agents.ruby_llm" do
-      creds = if defined?(Rails.application.credentials)
-        Rails.application.credentials
-      end
-
-      SolidAgents.openrouter_api_key ||= creds&.dig(:openrouter, :api_key) || ENV["OPENROUTER_API_KEY"]
-      SolidAgents.openrouter_api_base ||= creds&.dig(:openrouter, :api_base) || ENV["OPENROUTER_API_BASE"]
+      SolidAgents.openrouter_api_key ||= ENV["OPENROUTER_API_KEY"]
+      SolidAgents.openrouter_api_base ||= ENV["OPENROUTER_API_BASE"]
 
       RubyLLM.configure do |config|
         config.openrouter_api_key = SolidAgents.openrouter_api_key if SolidAgents.openrouter_api_key.present?

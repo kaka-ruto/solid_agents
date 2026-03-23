@@ -110,8 +110,8 @@ gem build solid_agents.gemspec
 
 ## Secrets And Testing
 
-- Runtime credentials are loaded from `Rails.application.credentials.dig(:openrouter, :api_key)` first, then `OPENROUTER_API_KEY`.
-- Keep real keys out of committed files and never commit `config/credentials/*.key`.
+- Runtime credentials are loaded from environment variables only: `OPENROUTER_API_KEY` and optional `OPENROUTER_API_BASE`.
+- Keep real keys out of committed files and never commit `.env`.
 - Live LLM tests use VCR with `record: :once` and secret filtering.
 - Record cassettes intentionally with:
 
@@ -120,3 +120,4 @@ LIVE_LLM=1 OPENROUTER_API_KEY=... bundle exec rake test TEST=test/integration/so
 ```
 
 - To re-record a live interaction, delete the cassette file first and run the command again.
+- You can create a local `.env` from `.env.sample` and load it with `set -a; source .env; set +a`.

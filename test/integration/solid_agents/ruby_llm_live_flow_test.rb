@@ -11,8 +11,8 @@ module SolidAgents
         skip "Set LIVE_LLM=1 to record the cassette once for live API testing"
       end
 
-      key = ENV["OPENROUTER_API_KEY"] || Rails.application.credentials.dig(:openrouter, :api_key)
-      skip "Set OPENROUTER_API_KEY or rails credentials openrouter.api_key to run live test" if key.blank?
+      key = ENV["OPENROUTER_API_KEY"]
+      skip "Set OPENROUTER_API_KEY to run live test" if key.blank?
 
       run = SolidAgents::Run.find(fixture_id(:received_run))
 

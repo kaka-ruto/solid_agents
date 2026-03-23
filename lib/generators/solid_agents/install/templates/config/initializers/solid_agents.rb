@@ -4,11 +4,9 @@ Rails.application.configure do
   # Optional: override in specific environments.
   # config.solid_agents.connects_to = { database: { writing: :solid_agents } }
 
-  # Prefer Rails credentials for secrets:
-  # rails credentials:edit
-  # openrouter:
-  #   api_key: "..."
-  #   api_base: "https://openrouter.ai/api/v1" # optional
+  # Configure LLM access with environment variables:
+  # OPENROUTER_API_KEY="..."
+  # OPENROUTER_API_BASE="https://openrouter.ai/api/v1" # optional
 
   config.solid_agents.default_model = ENV.fetch("SOLID_AGENTS_DEFAULT_MODEL", "minimax/minimax-m2.7")
   config.solid_agents.default_provider = :openrouter
