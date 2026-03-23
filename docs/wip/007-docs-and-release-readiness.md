@@ -1,6 +1,6 @@
 # 007 Docs And Release Readiness
 
-- [ ] Update README to describe the event-driven fixer pipeline.
-- [ ] Mention stage ownership and current WIP boundaries.
-- [ ] Run full test suite and fix regressions.
-- [ ] Build gem artifact successfully.
+- [x] Update README to describe the event-driven fixer pipeline.
+- [x] Mention stage ownership and current WIP boundaries.
+- [x] Run full test suite and fix regressions.
+- [x] Build gem artifact successfully.

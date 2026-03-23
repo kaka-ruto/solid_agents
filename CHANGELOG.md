@@ -2,6 +2,23 @@
 
 All notable changes to `solid_agents` will be documented in this file.
 
+## [v0.2.0] - 2026-03-23
+
+Major architecture reset delivered as a minor release for rapid iteration.
+
+- Replaced runtime adapters with a single pi-only execution path.
+- Rebuilt the run model into an event-driven staged workflow.
+- Added work-item board tracking and explicit inter-agent handoff records.
+- Introduced stage ownership with alphabetical agents: alex, betty, chad, david, emma.
+- Updated installer schema and initializer templates for the new workflow primitives.
+- Reworked run UI to expose stage, owner, events, and artifacts in clean columns.
+- Expanded Minitest coverage and moved to YAML fixtures for deterministic test data.
+
+Status notes:
+
+- This release is still WIP and not production-ready.
+- Breaking changes are expected before `1.0`.
+
 ## [v0.1.0] - 2026-03-22
 
 Initial public release (WIP).
