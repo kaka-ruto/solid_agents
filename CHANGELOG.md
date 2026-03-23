@@ -2,6 +2,20 @@
 
 All notable changes to `solid_agents` will be documented in this file.
 
+## [v0.2.1] - 2026-03-23
+
+Follow-up release for RubyLLM runtime and path conventions.
+
+- Moved agent classes and prompt templates to `app/solid_agents/agents` and `app/solid_agents/prompts`.
+- Added VCR-backed live RubyLLM integration coverage with secret filtering and record-once behavior.
+- Standardized LLM credential loading to environment variables only and added `.env.sample`.
+- Updated installer and docs to reflect ENV-first configuration and current runtime defaults.
+
+Status notes:
+
+- This release is still WIP and not production-ready.
+- Breaking changes are expected before `1.0`.
+
 ## [v0.2.0] - 2026-03-23
 
 Major architecture reset delivered as a minor release for rapid iteration.
