@@ -88,14 +88,14 @@ SolidAgents.dispatch_error(source: solid_error_record, agent_key: "alex")
 
 ## RubyLLM Conventions
 
-- Agent classes live in `app/agents/solid_agents/agents`.
-- Prompt instructions live in `app/prompts/.../instructions.txt.erb`.
+- Agent classes live in `app/solid_agents/agents`.
+- Prompt instructions live in `app/solid_agents/prompts/.../instructions.txt.erb`.
 - Stage owners map directly to RubyLLM agent classes.
 
 ## Configuration
 
 ```ruby
-config.solid_agents.default_model = "gpt-5-nano"
+config.solid_agents.default_model = "minimax/minimax-m2.7"
 config.solid_agents.default_test_command = "bin/rails test"
 config.solid_agents.max_iterations = 8
 ```
@@ -107,3 +107,16 @@ bundle install
 bundle exec rake test
 gem build solid_agents.gemspec
 ```
+
+## Secrets And Testing
+
+- Runtime credentials are loaded from `Rails.application.credentials.dig(:openrouter, :api_key)` first, then `OPENROUTER_API_KEY`.
+- Keep real keys out of committed files and never commit `config/credentials/*.key`.
+- Live LLM tests use VCR with `record: :once` and secret filtering.
+- Record cassettes intentionally with:
+
+```bash
+LIVE_LLM=1 OPENROUTER_API_KEY=... bundle exec rake test TEST=test/integration/solid_agents/ruby_llm_live_flow_test.rb
+```
+
+- To re-record a live interaction, delete the cassette file first and run the command again.

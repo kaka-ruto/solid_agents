@@ -24,5 +24,6 @@ module Dummy
 
     config.solid_agents.connects_to = { database: { writing: :primary } }
     config.solid_agents.default_runtime = :ruby_llm
+    config.solid_agents.default_provider = :openrouter
   end
 end

@@ -21,7 +21,7 @@ Instructions for AI coding agents working in this gem.
 - Prefer integration tests in `test/integration`; do not add controller tests.
 - Use RubyLLM conventions for agent orchestration:
   - place agent classes under `app/agents`
-  - place prompt files under `app/prompts/.../instructions.txt.erb`
+  - place prompt files under `app/solid_agents/prompts/.../instructions.txt.erb`
 - Run tests with Ruby `4.0.1`.
 
 ## Commit rules

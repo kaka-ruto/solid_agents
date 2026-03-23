@@ -7,6 +7,7 @@ $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 require_relative "dummy/config/environment"
 require "rails/test_help"
 require "solid_agents"
+require_relative "support_vcr"
 require "fileutils"
 
 ActiveJob::Base.queue_adapter = :test
