@@ -32,12 +32,23 @@ ActiveRecord::MigrationContext.new(migration_paths).migrate
 class ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
+  self.fixture_paths = [File.expand_path("fixtures", __dir__)]
+  fixtures :all
+
+  set_fixture_class(
+    solid_agents_agents: "SolidAgents::Agent",
+    solid_agents_runs: "SolidAgents::Run",
+    solid_agents_run_events: "SolidAgents::RunEvent",
+    solid_agents_artifacts: "SolidAgents::Artifact",
+    solid_agents_work_items: "SolidAgents::WorkItem",
+    solid_agents_handoffs: "SolidAgents::Handoff"
+  )
+
+  def fixture_id(name)
+    ActiveRecord::FixtureSet.identify(name)
+  end
+
   setup do
-    SolidAgents::Artifact.delete_all
-    SolidAgents::RunEvent.delete_all
-    SolidAgents::Run.delete_all
-    SolidAgents::Agent.delete_all
-    SolidAgents::Config.delete_all
     ActiveJob::Base.queue_adapter.enqueued_jobs.clear
     ActiveJob::Base.queue_adapter.performed_jobs.clear
   end

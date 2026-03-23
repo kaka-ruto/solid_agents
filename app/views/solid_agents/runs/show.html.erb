@@ -6,6 +6,11 @@
     Status: <span class="badge <%= status_badge_class(@run.status) %>"><%= @run.status %></span>
   </p>
   <p>
+    Stage: <strong><%= @run.stage %></strong> |
+    Owner: <strong><%= @run.stage_owner %></strong> |
+    Board Column: <strong><%= @run.work_item&.column_key || @run.stage %></strong>
+  </p>
+  <p>
     Source: <%= [@run.source_type, @run.source_id].compact.join("#") %>
   </p>
   <%= button_to "Retry", retry_run_path(@run), method: :post, class: "btn primary" %>
@@ -19,6 +24,7 @@
         <tr>
           <th>#</th>
           <th>Type</th>
+          <th>Actor</th>
           <th>Message</th>
         </tr>
       </thead>
@@ -27,6 +33,7 @@
           <tr>
             <td><%= event.sequence %></td>
             <td><%= event.event_type %></td>
+            <td><%= event.actor %></td>
             <td><%= event.message %></td>
           </tr>
         <% end %>

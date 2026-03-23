@@ -6,9 +6,10 @@
         <th>ID</th>
         <th>Agent</th>
         <th>Status</th>
+        <th>Stage</th>
+        <th>Owner</th>
         <th>Runtime</th>
         <th>Source</th>
-        <th>Started</th>
       </tr>
     </thead>
     <tbody>
@@ -17,9 +18,10 @@
           <td><%= link_to "##{run.id}", run_path(run) %></td>
           <td><%= run.agent&.key %></td>
           <td><span class="badge <%= status_badge_class(run.status) %>"><%= run.status %></span></td>
+          <td><%= run.stage %></td>
+          <td><%= run.stage_owner %></td>
           <td><%= run.runtime %></td>
           <td><%= [run.source_type, run.source_id].compact.join("#") %></td>
-          <td><%= run.started_at || run.created_at %></td>
         </tr>
       <% end %>
     </tbody>

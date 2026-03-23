@@ -18,7 +18,7 @@ module SolidAgents
           "",
           '\\1# Configure Solid Agent',
           '\\1config.solid_agents.connects_to = { database: { writing: :solid_agents } }',
-          '\\1config.solid_agents.default_runtime = :openclaw'
+          '\\1config.solid_agents.default_runtime = :pi'
         ].join("\n")
       end
     end

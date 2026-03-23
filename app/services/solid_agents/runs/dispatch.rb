@@ -16,12 +16,15 @@ module SolidAgents
           external_key: "#{source.class.name}-#{source.respond_to?(:id) ? source.id : source.object_id}-#{Time.current.to_i}",
           repo_path: agent.working_directory,
           base_branch: "main",
-          max_iterations: agent.max_iterations
+          max_iterations: agent.max_iterations,
+          stage: "received",
+          stage_owner: "alex"
         )
 
         context = ContextBuilder.call(source: source)
         run.update!(prompt_payload: context)
-        run.append_event!("dispatched", message: "Run dispatched from source", payload: {agent_key: agent.key})
+        run.append_event!("run_received", message: "Run received from source", payload: {"agent_key" => agent.key, "source_type" => run.source_type}, actor: "alex")
+        run.create_work_item!(column_key: run.stage, title: "Fix #{run.source_type}##{run.source_id || "n/a"}", summary: "Automated error-fixing pipeline", metadata_json: {"agent_key" => agent.key})
 
         SolidAgents::ExecuteRunJob.perform_later(run.id)
         run

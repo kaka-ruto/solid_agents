@@ -4,8 +4,8 @@ ActiveRecord::Schema[6.1].define do
   create_table :solid_agents_agents, force: :cascade do |t|
     t.string :key, null: false
     t.string :name, null: false
-    t.string :role, null: false, default: "fixer"
-    t.string :runtime, null: false, default: "tinyclaw"
+    t.string :role, null: false, default: "alex"
+    t.string :runtime, null: false, default: "pi"
     t.boolean :enabled, null: false, default: true
     t.string :environment
     t.string :model
@@ -26,7 +26,9 @@ ActiveRecord::Schema[6.1].define do
     t.bigint :source_id
     t.string :error_fingerprint
     t.string :status, null: false, default: "queued"
-    t.string :runtime, null: false
+    t.string :stage, null: false, default: "received"
+    t.string :stage_owner, null: false, default: "alex"
+    t.string :runtime, null: false, default: "pi"
     t.string :environment, null: false
     t.string :repo_path
     t.string :base_branch
@@ -47,14 +49,39 @@ ActiveRecord::Schema[6.1].define do
 
   add_index :solid_agents_runs, :external_key, unique: true
   add_index :solid_agents_runs, :status
+  add_index :solid_agents_runs, :stage
   add_index :solid_agents_runs, :error_fingerprint
   add_index :solid_agents_runs, [:source_type, :source_id]
+
+  create_table :solid_agents_work_items, force: :cascade do |t|
+    t.references :run, null: false, foreign_key: {to_table: :solid_agents_runs}
+    t.string :column_key, null: false, default: "received"
+    t.string :title, null: false
+    t.text :summary
+    t.json :metadata_json, default: {}
+    t.timestamps
+  end
+
+  add_index :solid_agents_work_items, :column_key
+
+  create_table :solid_agents_handoffs, force: :cascade do |t|
+    t.references :run, null: false, foreign_key: {to_table: :solid_agents_runs}
+    t.string :stage, null: false
+    t.string :from_agent, null: false
+    t.string :to_agent, null: false
+    t.text :note
+    t.json :payload, default: {}
+    t.timestamps
+  end
+
+  add_index :solid_agents_handoffs, [:run_id, :stage]
 
   create_table :solid_agents_run_events, force: :cascade do |t|
     t.references :run, null: false, foreign_key: {to_table: :solid_agents_runs}
     t.string :event_type, null: false
     t.datetime :event_time, null: false
     t.text :message, null: false
+    t.string :actor
     t.json :payload, default: {}
     t.integer :sequence, null: false
     t.timestamps

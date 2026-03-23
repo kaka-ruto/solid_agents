@@ -1,0 +1,10 @@
+one:
+  run_id: <%= ActiveRecord::FixtureSet.identify(:received_run) %>
+  event_type: run_received
+  event_time: <%= Time.current %>
+  message: Initial event
+  actor: alex
+  payload: {}
+  sequence: 1
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

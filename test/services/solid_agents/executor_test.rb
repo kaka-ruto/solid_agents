@@ -18,30 +18,30 @@ module SolidAgents
         end
       end
 
-      test "marks run succeeded on ok result" do
-        agent = SolidAgents::Agent.create!(key: "fixer", name: "Fixer", runtime: "tinyclaw", role: "fixer")
-        run = SolidAgents::Run.create!(agent: agent, source_type: "Error", runtime: "tinyclaw", environment: "test", prompt_payload: {"id" => 1})
+      test "moves to next stage and enqueues follow-up when successful" do
+        run = SolidAgents::Run.find(fixture_id(:received_run))
 
         adapter = FakeAdapter.new(SolidAgents::Runtime::Adapter::Result.new(ok: true, output: "done", error: "", metadata: {"exit_status" => 0}))
-
         original = SolidAgents.method(:runtime_adapter)
         SolidAgents.singleton_class.define_method(:runtime_adapter) { |_runtime| adapter }
-        Executor.call(run)
+
+        assert_enqueued_with(job: SolidAgents::ExecuteRunJob) do
+          Executor.call(run)
+        end
 
         run.reload
-        assert_equal "succeeded", run.status
-        assert_equal 1, run.artifacts.count
-        assert_equal 2, run.events.count
+        assert_equal "triaged", run.stage
+        assert_equal "alex", run.stage_owner
+        assert_equal "running", run.status
+        assert_operator run.handoffs.count, :>=, 1
       ensure
-        SolidAgents.singleton_class.define_method(:runtime_adapter, original)
+        SolidAgents.singleton_class.define_method(:runtime_adapter, original.to_proc)
       end
 
       test "marks run failed on non ok result" do
-        agent = SolidAgents::Agent.create!(key: "fixer", name: "Fixer", runtime: "tinyclaw", role: "fixer")
-        run = SolidAgents::Run.create!(agent: agent, source_type: "Error", runtime: "tinyclaw", environment: "test", prompt_payload: {"id" => 1})
+        run = SolidAgents::Run.find(fixture_id(:received_run))
 
         adapter = FakeAdapter.new(SolidAgents::Runtime::Adapter::Result.new(ok: false, output: "", error: "bad", metadata: {"exit_status" => 1}))
-
         original = SolidAgents.method(:runtime_adapter)
         SolidAgents.singleton_class.define_method(:runtime_adapter) { |_runtime| adapter }
         Executor.call(run)
@@ -50,7 +50,7 @@ module SolidAgents
         assert_equal "failed", run.status
         assert_equal "bad", run.error_payload["stderr"]
       ensure
-        SolidAgents.singleton_class.define_method(:runtime_adapter, original)
+        SolidAgents.singleton_class.define_method(:runtime_adapter, original.to_proc)
       end
     end
   end

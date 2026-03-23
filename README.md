@@ -1,6 +1,6 @@
 # SolidAgents
 
-**Automation workflows for Rails apps, powered by agent runtimes.**
+**Event-driven error fixing workflow for Rails apps, powered by the pi runtime.**
 
 > [!WARNING]
 > `solid_agents` is an early release and still a work in progress.
@@ -8,26 +8,30 @@
 > Expect breaking changes before `1.0`.
 > Not production-ready yet.
 
-`solid_agents` is a Rails engine that consumes observability/incident APIs (for example from `solid_events`), stores automation run state, dispatches work to runtime executors (TinyClaw in development, OpenClaw in production), and provides a built-in dashboard for operations.
+`solid_agents` is a Rails engine focused on a single pipeline:
+
+`error received -> staged agent workflow -> code fix attempt -> PR/CI stage tracking`
 
 ## Scope
 
-`solid_agents` is strictly for automation and execution:
+`solid_agents` is for automation orchestration and execution only:
 
-- Consume incident/trace APIs and operator instructions
-- Plan/execute workflows (triage, patch, test, PR, QA, review loops)
-- Track run lifecycle, artifacts, and runtime outputs
-- Route tasks to runtime adapters (TinyClaw/OpenClaw)
+- Consume error-like events from source adapters (starting with `solid_errors` style payloads)
+- Track runs in an event-driven stage machine
+- Enforce non-overlapping stage ownership (`alex`, `betty`, `chad`, `david`, `emma`)
+- Persist handoffs, notes, and artifacts for each stage
+- Execute stage tasks through the pi runtime adapter
 
-It does **not** own observability storage or incident detection/state as a source of truth. That belongs in `solid_events`.
+It does **not** own observability storage or incident detection as a source of truth.
 
 ## Features
 
-- DB-backed run lifecycle (`queued`, `running`, `succeeded`, `failed`)
-- Separate agent profiles per environment
-- Runtime adapters for TinyClaw and OpenClaw
-- Built-in UI for runs, events, artifacts, and agent configuration
-- Install generator and schema template aligned with Solid gem conventions
+- DB-backed run lifecycle and stage workflow
+- Append-only run events with actor attribution
+- Work-item board columns driven by stage transitions
+- Handoff records between stage owners
+- Built-in UI for runs, events, and artifacts
+- Installer generator and schema template
 
 ## Installation
 
@@ -43,25 +47,12 @@ Run installer:
 rails generate solid_agents:install
 ```
 
-Add a dedicated database in `config/database.yml` (recommended):
-
-```yaml
-production:
-  primary: &primary
-    <<: *default
-    database: app_production
-  solid_agents:
-    <<: *primary
-    database: app_production_solid_agents
-    migrations_paths: db/agent_migrate
-```
-
-Configure engine DB connection:
+Configure engine DB connection if desired:
 
 ```ruby
 # config/environments/production.rb
 config.solid_agents.connects_to = { database: { writing: :solid_agents } }
-config.solid_agents.default_runtime = :openclaw
+config.solid_agents.default_runtime = :pi
 ```
 
 Mount the UI:
@@ -75,30 +66,30 @@ end
 
 ## Usage
 
-Create an agent profile:
+Create pipeline agents:
 
 ```ruby
-SolidAgents::Agent.create!(
-  key: "fixer",
-  name: "Bug Fixer",
-  role: "fixer",
-  runtime: Rails.env.production? ? "openclaw" : "tinyclaw",
-  working_directory: Rails.root.to_s,
-  capabilities_json: {"allow_pr" => Rails.env.production?}
-)
+%w[alex betty chad david emma].each do |key|
+  SolidAgents::Agent.find_or_create_by!(key: key, environment: Rails.env) do |agent|
+    agent.name = key.capitalize
+    agent.role = key
+    agent.runtime = "pi"
+    agent.working_directory = Rails.root.to_s
+    agent.enabled = true
+  end
+end
 ```
 
 Dispatch from a job:
 
 ```ruby
-SolidAgents.dispatch_error(source: solid_error_record, agent_key: "fixer")
+SolidAgents.dispatch_error(source: solid_error_record, agent_key: "alex")
 ```
 
 ## Configuration
 
 ```ruby
-config.solid_agents.tinyclaw_command = "tinyclaw"
-config.solid_agents.openclaw_command = "openclaw"
+config.solid_agents.pi_command = "pi"
 config.solid_agents.default_test_command = "bin/rails test"
 config.solid_agents.max_iterations = 8
 ```
@@ -108,4 +99,5 @@ config.solid_agents.max_iterations = 8
 ```bash
 bundle install
 bundle exec rake test
+gem build solid_agents.gemspec
 ```

@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["kr@kakaruto.com"]
 
   spec.summary = "Database-backed Rails AI agent runtime bridge"
-  spec.description = "Solid Agent stores agent runs in its own database and dispatches work to tinyclaw/openclaw runtimes with a built-in Rails UI."
+  spec.description = "Solid Agent stores agent runs in its own database and dispatches staged workflow tasks to the pi runtime with a built-in Rails UI."
   spec.homepage = "https://github.com/kaka-ruto/solid_agents"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.6.0"

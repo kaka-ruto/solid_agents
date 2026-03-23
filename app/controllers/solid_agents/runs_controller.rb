@@ -17,13 +17,16 @@ module SolidAgents
     def retry
       duplicated = @run.dup
       duplicated.status = :queued
+      duplicated.stage = "received"
+      duplicated.stage_owner = "alex"
       duplicated.started_at = nil
       duplicated.finished_at = nil
       duplicated.error_payload = nil
       duplicated.result_payload = nil
       duplicated.external_key = "retry-#{@run.id}-#{Time.current.to_i}"
       duplicated.save!
-      duplicated.append_event!("retried", message: "Run created from retry", payload: {original_run_id: @run.id})
+      duplicated.create_work_item!(column_key: duplicated.stage, title: @run.work_item&.title || "Retry ##{@run.id}", summary: "Retry workflow run", metadata_json: {"original_run_id" => @run.id})
+      duplicated.append_event!("retried", message: "Run created from retry", payload: {"original_run_id" => @run.id}, actor: "alex")
       SolidAgents::ExecuteRunJob.perform_later(duplicated.id)
 
       redirect_to run_path(duplicated), notice: "Run retried."

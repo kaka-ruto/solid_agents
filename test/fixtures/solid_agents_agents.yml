@@ -1,0 +1,25 @@
+alex:
+  key: alex
+  name: Alex
+  role: alex
+  runtime: pi
+  enabled: true
+  environment: test
+  capabilities_json: {}
+  timeout_seconds: 900
+  max_iterations: 8
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
+
+betty:
+  key: betty
+  name: Betty
+  role: betty
+  runtime: pi
+  enabled: true
+  environment: test
+  capabilities_json: {}
+  timeout_seconds: 900
+  max_iterations: 8
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>

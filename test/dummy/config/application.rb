@@ -23,6 +23,6 @@ module Dummy
     config.action_dispatch.show_exceptions = false
 
     config.solid_agents.connects_to = { database: { writing: :primary } }
-    config.solid_agents.default_runtime = :tinyclaw
+    config.solid_agents.default_runtime = :pi
   end
 end

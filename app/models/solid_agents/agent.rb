@@ -4,7 +4,7 @@ module SolidAgents
   class Agent < Record
     self.table_name = "solid_agents_agents"
 
-    ROLES = %w[fixer reviewer qa custom].freeze
+    ROLES = %w[alex betty chad david emma].freeze
 
     has_many :runs, class_name: "SolidAgents::Run", dependent: :nullify
 

@@ -8,7 +8,7 @@ Initial public release (WIP).
 
 - Introduced `solid_agents` Rails engine for database-backed agent run orchestration.
 - Added run lifecycle models and persistence for runs, events, artifacts, agents, and config.
-- Added dispatch and execution flow with runtime adapters for TinyClaw and OpenClaw.
+- Added dispatch and execution flow with runtime adapters for OpenAI pi runtime and OpenAI pi runtime.
 - Added built-in UI/controllers for managing agents and inspecting runs.
 - Added installer generator, schema template, and base configuration defaults.
 

@@ -1,0 +1,9 @@
+initial_log:
+  run_id: <%= ActiveRecord::FixtureSet.identify(:received_run) %>
+  kind: log
+  label: received_runtime_output
+  storage_type: inline
+  content_text: seeded output
+  content_json: {}
+  created_at: <%= Time.current %>
+  updated_at: <%= Time.current %>
